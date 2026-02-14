@@ -14,7 +14,6 @@ body{
   background:linear-gradient(135deg,#f8f6f2,#eae3dc);
   font-family:'Georgia',serif;
   overflow:hidden;
-  transition:1s ease;
 }
 
 /* CONTADOR */
@@ -26,20 +25,21 @@ body{
   font-size:18px;
   color:#6d6875;
   font-weight:500;
+  z-index:100;
 }
 
 .counter span{
   display:block;
-  font-size:22px;
+  font-size:26px;
   font-weight:bold;
   color:#b5838d;
+  line-height:1.4;
 }
 
 /* CONTENEDOR */
 .container{
   position:relative;
   text-align:center;
-  z-index:5;
 }
 
 /* SOBRE */
@@ -83,7 +83,7 @@ body{
 /* CARTA */
 .letter{
   position:absolute;
-  width:340px;
+  width:360px;
   background:white;
   padding:30px;
   border-radius:15px;
@@ -139,18 +139,24 @@ h2{
 
 <script>
 
-/* CONTADOR TIEMPO */
+/* CONTADOR COMPLETO */
 function updateCounter(){
   const startDate = new Date("2019-12-10T00:00:00");
   const now = new Date();
   const diff = now - startDate;
 
+  const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
   const minutes = Math.floor(diff / (1000 * 60)) % 60;
   const seconds = Math.floor(diff / 1000) % 60;
 
   document.getElementById("timeTogether").innerHTML =
-    `${days} días<br>${minutes} minutos<br>${seconds} segundos`;
+    years + " años<br>" +
+    days + " días<br>" +
+    hours + " horas<br>" +
+    minutes + " minutos<br>" +
+    seconds + " segundos";
 }
 
 setInterval(updateCounter,1000);
@@ -191,7 +197,7 @@ es porque quiero seguir escribiendo nuestra historia contigo.`;
   createHearts();
 }
 
-/* CORAZONES SUTILES */
+/* CORAZONES */
 function createHearts(){
   for(let i=0;i<15;i++){
     let heart=document.createElement("div");
@@ -209,3 +215,4 @@ function createHearts(){
 
 </body>
 </html>
+
