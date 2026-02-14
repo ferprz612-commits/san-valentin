@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para ti 🐱💌</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#f5f1e8,#ede0d4);
+  font-family:'Georgia',serif;
+  overflow:hidden;
+  transition:1s ease;
+}
+
+/* CONTENEDOR */
+.container{
+  position:relative;
+  text-align:center;
+  z-index:5;
+}
+
+/* SOBRE */
+.envelope{
+  width:340px;
+  height:220px;
+  background:#e6d5c3;
+  border-radius:8px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.2);
+  position:relative;
+}
+
+.flap{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#d6c2ae;
+  clip-path: polygon(0 0, 50% 65%, 100% 0);
+  transform-origin:top;
+  transition:transform 1s ease;
+}
+
+/* DETALLE GATO */
+.cat-icon{
+  position:absolute;
+  bottom:10px;
+  right:15px;
+  font-size:20px;
+  opacity:0.6;
+}
+
+/* BOTÓN ABRIR */
+.open-btn{
+  margin-top:25px;
+  padding:12px 28px;
+  border:none;
+  border-radius:25px;
+  background:#b08968;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+.open-btn:hover{
+  background:#7f5539;
+  transform:scale(1.05);
+}
+
+/* CARTA */
+.letter{
+  position:absolute;
+  width:320px;
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  transition:0.7s ease;
+  z-index:10;
+}
+
+.buttons{
+  margin-top:20px;
+}
+
+.buttons button{
+  padding:10px 20px;
+  margin:8px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:14px;
+  transition:0.3s;
+}
+
+#yesBtn{
+  background:#ffafcc;
+}
+
+#yesBtn:hover{
+  transform:scale(1.1);
+}
+
+#noBtn{
+  background:#d9d9d9;
+  position:relative;
+}
+
+/* CORAZONES */
+.heart{
+  position:absolute;
+  pointer-events:none;
+  animation:burst 3s ease forwards;
+  filter:drop-shadow(0 0 8px rgba(255,105,180,0.7));
+}
+
+@keyframes burst{
+  0%{
+    transform:translate(0,0) scale(0.3);
+    opacity:1;
+  }
+  100%{
+    transform:translate(var(--x), var(--y)) scale(1.6);
+    opacity:0;
+  }
+}
+
+/* FONDO MÁGICO */
+.magic-bg{
+  background:linear-gradient(270deg,#ff6ec4,#7873f5,#4facfe,#ffd6ff);
+  background-size:800% 800%;
+  animation:gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* FLORES */
+.flowers{
+  position:fixed;
+  bottom:0;
+  width:120px;
+  height:100%;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:15px;
+  z-index:1;
+}
+
+.left{
+  left:0;
+  align-items:flex-start;
+}
+
+.right{
+  right:0;
+  align-items:flex-end;
+}
+
+.flower{
+  font-size:30px;
+  opacity:0;
+  transform:translateY(50px) scale(0.5);
+  animation:growFlower 2s ease forwards;
+}
+
+@keyframes growFlower{
+  0%{
+    opacity:0;
+    transform:translateY(50px) scale(0.5);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="envelope">
+    <div class="flap" id="flap"></div>
+    <div class="cat-icon">🐾</div>
+  </div>
+
+  <button class="open-btn" onclick="openLetter()">Abrir 💌</button>
+
+  <div class="letter" id="letter">
+    <h2>Para ti 🐱💖</h2>
+    <p>
+      No sé en qué momento te volviste mi pensamiento favorito...  
+      pero si esta carta llegó hasta ti, es porque algo especial está pasando.
+      <br><br>
+      ¿Te gustaría descubrirlo conmigo?
+    </p>
+
+    <div class="buttons">
+      <button id="yesBtn" onclick="sayYes()">Sí 💕</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+  </div>
+</div>
+
+<div class="flowers left"></div>
+<div class="flowers right"></div>
+
+<script>
+function openLetter(){
+  document.getElementById("flap").style.transform="rotateX(180deg)";
+  document.getElementById("letter").style.transform="translate(-50%,-50%) scale(1)";
+  createHearts(25);
+}
+
+function createHearts(amount){
+  const envelope=document.querySelector(".envelope");
+  const rect=envelope.getBoundingClientRect();
+  const centerX=rect.left+rect.width/2;
+  const centerY=rect.top+rect.height/2;
+
+  for(let i=0;i<amount;i++){
+    let heart=document.createElement("div");
+    heart.classList.add("heart");
+
+    const emojis=["💖","💗","💘","💞"];
+    heart.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+
+    heart.style.left=centerX+"px";
+    heart.style.top=centerY+"px";
+    heart.style.fontSize=(15+Math.random()*30)+"px";
+
+    let randomX=(Math.random()-0.5)*500;
+    let randomY=-Math.random()*400;
+
+    heart.style.setProperty('--x',randomX+"px");
+    heart.style.setProperty('--y',randomY+"px");
+
+    document.body.appendChild(heart);
+    setTimeout(()=>{heart.remove();},3000);
+  }
+}
+
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+  const x=Math.random()*200-100;
+  const y=Math.random()*200-100;
+  noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+function sayYes(){
+  document.body.classList.add("magic-bg");
+  createHearts(40);
+  growFlowers();
+}
+
+function growFlowers(){
+  const left=document.querySelector(".left");
+  const right=document.querySelector(".right");
+  const flowerEmojis=["🌸","🌷","🌹","🌺","🌼"];
+
+  for(let i=0;i<8;i++){
+    let flowerL=document.createElement("div");
+    flowerL.classList.add("flower");
+    flowerL.innerHTML=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+    flowerL.style.animationDelay=(i*0.2)+"s";
+    left.appendChild(flowerL);
+
+    let flowerR=document.createElement("div");
+    flowerR.classList.add("flower");
+    flowerR.innerHTML=flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+    flowerR.style.animationDelay=(i*0.2)+"s";
+    right.appendChild(flowerR);
+  }
+}
+</script>
+
+</body>
+</html>
